@@ -1,93 +1,71 @@
 # python3
-# import ipdb
 
-# REMEMBER!!!
-#  => SMALLEST UNIT OF WORK
-#  => create methods for each unit of work, so you can test separately
-#  => even if you're not sure if it'll work, just write it and try
-#      (to avoid getting stuck in a loop)
-#  => WHITEBOARD BEFORE WRITING ANY CODE
-#     write out several examples and how to solve on whiteboard
-#  => then psuedocode
+import sys
 
 class Bracket:
     def __init__(self, bracket_type, position):
         self.bracket_type = bracket_type
-        self.position = position # right now position not used for anything
+        self.position = position
 
-    def Match(self, something): # Bracket('[', 1).Match(']')
-        if self.bracket_type == '[' and something == ']':
+    def Match(self, c):
+        if self.bracket_type == '[' and c == ']':
             return True
-        if self.bracket_type == '{' and something == '}':
+        if self.bracket_type == '{' and c == '}':
             return True
-        if self.bracket_type == '(' and something == ')':
+        if self.bracket_type == '(' and c == ')':
             return True
         return False
+
+# if __name__ == "__main__":
+#     text = sys.stdin.read()
+
+#     opening_brackets_stack = []
+#     for i, next in enumerate(text):
+#         if next == '(' or next == '[' or next == '{':
+#             stack.append(next)
+
+#         if next == ')' or next == ']' or next == '}':
+#             # Process closing bracket, write your code here
+#             pass
+
+    # Printing answer, write your code here
+
 
 def isBalanced(string):
     stack = []
 
     for index, char in enumerate(string):
-        print('\n--------------------\n')
-        print(f'char: {char}, string: {string}')
+        print('------------------------')
+        print(f'char: {char}, index: {index}')
         print(f'stack: {stack}')
 
-        # append all opening brackets first into my stack
-        # if char in ['(', '[', '{']:
-        if char not in [')', ']', '}']:
+        if char in ["(", "[", "{"]:
             stack.append(char)
-            print(f'\npushing onto stack. stack: {stack}')
-
-        # if done appending opening brackets into my stack,
-        # check closing brackets
+        elif char not in ["(", ")", "[", "]", "{", "}"]:
+            print('char is not a closing or opening bracket.')
+            print(f'char: {char}, index: {index}')
         else:
-            if len(stack) == 0: # checking if stack is empty
-                print('\nstack is empty, returning index+1.')
-                return index+1
-
-            top = stack.pop()
-            print(f'\npopping from stack. stack: {stack}')
-            print(f'top: {top}, char: {char}')
-
-            # if matching, continue
-            if (top=='[' and char==']') or (top=='(' and char==')') or (top=='{' and char=='}'):
-                pass
-            # if not matching, return
+            if len(stack) == 0 and index == len(string):
+                print(f'stack length is zero. index: {index}')
+                return index
             else:
-                print('\n--------------------\n')
-                print(f'brackets not matching. index: {index}')
-                print(f'top: {top}, char: {char}')
-                return index+1
+                stack_last_item = stack.pop()
+                print(f'\nstack last item: {stack_last_item}, char: {char}')
+
+                if (stack_last_item=="(" and char!=")") or (stack_last_item=="[" and char!="]") or (stack_last_item=="{" and char!="}"):
+                    print(f'\nnot a match! index: {index}')
+                    return index+1
 
     if len(stack) == 0:
         return 'Success'
     else:
-        print('\nnot balanced!!!!')
-        return index+1
+        return index
 
-print(isBalanced('{[]}()'))
+# print(isBalanced('{[]}bl(ah')) # 8
+# print(isBalanced('{[]}()')) # Success
+# print(isBalanced('{[}')) # 3
 # print(isBalanced('{[}()')) # 3
-# print(isBalanced('foo(bar);'))
+# print(isBalanced('foo(bar);')) # Success
 # print(isBalanced('foo(bar[i);')) # 10
-
-# ipdb.set_trace()
-
-# Input:
-# foo(bar[i);
-# Output:
-# 10
-
-# Input:
-# foo(bar);
-# Output:
-# Success
-
-# Input:
-# {[}
-# Output:
-# 3
-
-# {[]}()
-# Output:
-# Success
-# Explanation
+# print(isBalanced('([]]()')) # 4
+# print(isBalanced('][')) # 1
