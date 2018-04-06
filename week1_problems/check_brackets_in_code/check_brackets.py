@@ -1,5 +1,4 @@
 # python3
-
 import sys
 
 class Bracket:
@@ -7,7 +6,7 @@ class Bracket:
         self.bracket_type = bracket_type
         self.position = position
 
-    def Match(self, c):
+    def match(self, c):
         if self.bracket_type == '[' and c == ']':
             return True
         if self.bracket_type == '{' and c == '}':
@@ -16,56 +15,59 @@ class Bracket:
             return True
         return False
 
-# if __name__ == "__main__":
-#     text = sys.stdin.read()
-
-#     opening_brackets_stack = []
-#     for i, next in enumerate(text):
-#         if next == '(' or next == '[' or next == '{':
-#             stack.append(next)
-
-#         if next == ')' or next == ']' or next == '}':
-#             # Process closing bracket, write your code here
-#             pass
-
-    # Printing answer, write your code here
-
-
-def isBalanced(string):
+def isBalanced(text):
     stack = []
 
-    for index, char in enumerate(string):
-        print('------------------------')
-        print(f'char: {char}, index: {index}')
+    for index, char in enumerate(text, start=1):
+        print('----------------------')
+        print(f'index: {index}, char: {char}')
+        print(f'text: {text}')
         print(f'stack: {stack}')
 
-        if char in ["(", "[", "{"]:
-            stack.append(char)
-        elif char not in ["(", ")", "[", "]", "{", "}"]:
-            print('char is not a closing or opening bracket.')
-            print(f'char: {char}, index: {index}')
-        else:
-            if len(stack) == 0 and index == len(string):
-                print(f'stack length is zero. index: {index}')
+        if char in ("[", "(", "{"):
+            print(f'\nappending Bracket(char, index). char: {char}, index: {index}')
+            stack.append(Bracket(char, index))
+        elif char in ["]", ")", "}"]:
+            if len(stack) == 0:
+                print(f'stack is length 0. char: {char}, index: {index}')
                 return index
-            else:
-                stack_last_item = stack.pop()
-                print(f'\nstack last item: {stack_last_item}, char: {char}')
 
-                if (stack_last_item=="(" and char!=")") or (stack_last_item=="[" and char!="]") or (stack_last_item=="{" and char!="}"):
-                    print(f'\nnot a match! index: {index}')
-                    return index+1
+            top = stack.pop()
+            print(f'top: {top}, char: {char}, index: {index}')
+            if not top.match(char):
+                print(f'\nNot a match.')
+                return index
 
-    if len(stack) == 0:
-        return 'Success'
-    else:
-        return index
+    if stack:
+        print(f'\non line 42. stack: {stack}')
+        top = stack.pop()
+        print(f'top: {top}')
+        print(f'top.bracket_type: {top.bracket_type}, top.position: {top.position}')
+        return top.position
 
-# print(isBalanced('{[]}bl(ah')) # 8
+    return 'Success'
+
+
+print(isBalanced('{[]}bl(ahah')) # 7
+# print(isBalanced('{[]}bl)ahah')) # 7
 # print(isBalanced('{[]}()')) # Success
 # print(isBalanced('{[}')) # 3
 # print(isBalanced('{[}()')) # 3
-# print(isBalanced('foo(bar);')) # Success
 # print(isBalanced('foo(bar[i);')) # 10
+# print(isBalanced('foo(bar);')) # Success
 # print(isBalanced('([]]()')) # 4
-# print(isBalanced('][')) # 1
+# print(isBalanced('}')) # 1
+# print(isBalanced('{')) # 1
+# print(isBalanced('[]')) # Success
+# print(isBalanced('}()')) # 1
+# print(isBalanced('{}()]')) # 5
+# print(isBalanced('(())')) # Success
+# print(isBalanced('[()]')) # Success
+# print(isBalanced('{}[]')) # Success
+# print(isBalanced('[]')) # Success
+# print(isBalanced('[](()')) # 3
+
+
+# if __name__ == "__main__":
+#     text = sys.stdin.read().rstrip()
+#     print(isBalanced(text))
