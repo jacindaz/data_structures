@@ -1,41 +1,50 @@
-def path_length(node_id):
-    done = False
-    height = 1
-    while not done:
-        parent = parents[node_id]
-        # print('----------------')
-        # print(f'parent: {parent}, node_id: {node_id}')
-        # print(f'height: {height}')
+class TreeHeight:
+    def __init__(self, parents):
+        self.parent = parents
 
-        if parent == -1:
-            done = True
-        else:
-            node_id = parent
-            height += 1
-    return height
+    def read(self):
+        self.n = int(sys.stdin.readline())
+        self.parent = list(map(int, sys.stdin.readline().split()))
 
-# 10
-# 9 7 5 5 2 9 9 9 2 -1
-# print(path_length(8)) # 4
-# print(path_length(0)) # 2
-# print(path_length(9)) # 1
+    def path_length(self, node_id):
+        done = False
+        height = 1
+        while not done:
+            parent = self.parent[node_id]
+            if parent == -1:
+                done = True
+            else:
+                node_id = parent
+                height += 1
+        return height
+
+    def tree_max_height(self):
+        cache = []
+        for index, node in enumerate(self.parent):
+            height = self.path_length(index)
+            cache.append(height)
+
+        return max(cache)
 
 
-def tree_max_height(tree):
-    # SIMPLEST SOLUTION FIRST
-    cache = []
-    for index, node in enumerate(tree):
-        # find the height of the node
-        height = path_length(index)
+# parents = [-1,0,4,0,3] # 4
+# parents = [4,-1,4,1,1] # 3
+# parents = [9,7,5,5,2,9,9,9,2,-1] # 4
 
-        # store it in the cache
-        cache.append(height)
+# BOUNDARY CASES
+# parents = [-1] # 1
+# parents = [-1, 0] # 2
+# parents = [-1,0,1,2,3,4,5,6,7,8] # 10
 
-    print(f'cache: {cache}')
-    # find the max value
-    return max(cache)
+# max: 100000
+def max_height_tree(max):
+    nodes = [-1]
+    for n in range(0,max):
+        nodes.append(n)
 
-# parents = [9,7,5,5,2,9,9,9,2,-1]
-# parents = [-1,0,4,0,3]
-parents = [4,-1,4,1,1]
-print(tree_max_height(parents))
+    return nodes
+
+# STRESS TEST
+
+tree = TreeHeight(max_height_tree(100000))
+print(tree.tree_max_height())
