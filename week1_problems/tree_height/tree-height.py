@@ -1,35 +1,117 @@
+# import ipdb
+
 class TreeHeight:
     def __init__(self, parents):
         self.parent = parents
+        self.height_cache = len(self.parent) * [0]
 
     def read(self):
         self.n = int(sys.stdin.readline())
         self.parent = list(map(int, sys.stdin.readline().split()))
 
-    def path_length(self, node_id):
+    def store_heights_in_cache(self, top_down_heights, bottom_up_nodes):
+        root_to_leaf = list(reversed(bottom_up_nodes))
+        for index, node in enumerate(root_to_leaf):
+            self.height_cache[node] = top_down_heights[index]
+
+        return self.height_cache
+
+    def path_length(self, child_index, parent_index):
         done = False
-        height = 1
+        height = 1 # start with 0, or 1?
+
+        bottom_up_nodes = [child_index]
+        top_down_heights = [1]
         while not done:
-            parent = self.parent[node_id]
+            print('---------------')
+            print(f'child_index: {child_index}, parent_index: {parent_index}, height: {height}')
+            print(f'self.height_cache: {self.height_cache}')
+
+            parent = self.parent[child_index]
+            print(f'parent: {parent}')
+
             if parent == -1:
                 done = True
+                break
             else:
-                node_id = parent
+                if self.height_cache[parent]:
+                    print('\nnice! height already in height cache')
+
+                    # new height is the parent's height + 1
+                    child_height = self.height_cache[parent] + 1
+                    print(f'child_height: {child_height}')
+
+                    # append this child node's height to height cache
+                    self.height_cache[child_index] = child_height
+                    print(f'self.height_cache: {self.height_cache}')
+
+                    print(f'\nself.height_cache before updates: {self.height_cache}')
+                    self.store_heights_in_cache(top_down_heights, bottom_up_nodes)
+                    print(f'self.height_cache AFTER updates: {self.height_cache}\n')
+
+                    # return child_height
+
+                child_index = parent
                 height += 1
+
+            top_down_heights.append(height)
+            bottom_up_nodes.append(parent)
+
+            print(f'\ntop_down_heights: {top_down_heights}')
+            print(f'bottom_up_nodes: {bottom_up_nodes}')
+            print('---------------')
+
+        print(f'\nself.height_cache before updates: {self.height_cache}')
+        self.store_heights_in_cache(top_down_heights, bottom_up_nodes)
+        print(f'self.height_cache AFTER updates: {self.height_cache}\n')
         return height
 
     def tree_max_height(self):
-        cache = []
-        for index, node in enumerate(self.parent):
-            height = self.path_length(index)
-            cache.append(height)
+        max_height = 0
 
-        return max(cache)
+        # height cache is EMPTY right now
+        for child_index, parent_index in enumerate(self.parent):
+            print('---------------------')
+            print(f'child_index: {child_index}, parent_index: {parent_index}')
+            print(f'self.height_cache: {self.height_cache}')
+
+            # ipdb.set_trace()
+
+            if parent_index == -1:
+                next
+
+            # check if height already exists in height cache
+            # child_index: 0, parent_index: 9
+            # if yes, proceed
+            if self.height_cache[child_index] != 0:
+                height = self.height_cache[child_index]
+
+            # if not, run path_length to find the height
+            else:
+                self.path_length(child_index, parent_index)
+                height = self.height_cache[child_index]
+
+            # ipdb.set_trace()
+
+            # then compare current node's height with max heights
+            # if greater than max height
+            # change to new value of max height
+            if height > max_height:
+                max_height = height
+                print(f'changing max height. max_height: {max_height}')
+
+        print(f'\nFINAL self.height_cache: {self.height_cache}\n')
+        return max_height
+
+# parents = [9,7,5,5,2,9,9,9,2,-1,4] # 5
+# tree = TreeHeight(parents)
+# print(tree.path_length(4,2))
 
 
 # parents = [-1,0,4,0,3] # 4
 # parents = [4,-1,4,1,1] # 3
 # parents = [9,7,5,5,2,9,9,9,2,-1] # 4
+# parents = [9,7,5,5,2,9,9,9,2,-1,4] # 5
 
 # BOUNDARY CASES
 # parents = [-1] # 1
@@ -46,5 +128,8 @@ def max_height_tree(max):
 
 # STRESS TEST
 
-tree = TreeHeight(max_height_tree(100000))
+# tree = TreeHeight(max_height_tree(100000))
+
+parents = [9,7,5,5,2,9,9,9,2,-1,4] # 5
+tree = TreeHeight(parents)
 print(tree.tree_max_height())
