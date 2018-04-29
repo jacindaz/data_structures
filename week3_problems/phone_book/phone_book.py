@@ -42,6 +42,45 @@ def process_queries_naive_solution(queries):
             result.append(response)
     return result
 
-if __name__ == '__main__':
-    write_responses(process_queries_naive_solution(read_queries()))
+def process_queries_fast(queries):
+    contacts = {}
+    results = []
+    for query in queries:
+        if query.type == 'add':
+            contacts[query.number] = query
+        elif query.type == 'del':
+            if query.number in contacts:
+                del(contacts[query.number])
+            else:
+                next
+        elif query.type == 'find':
+            if query.number in contacts:
+                results.append(contacts[query.number].name)
+            else:
+                results.append('not found')
 
+    return results
+
+# input = [['add', '911', 'police'],
+#     ['add', '76213', 'Mom'],
+#     ['add', '17239', 'Bob'],
+#     ['find', '76213'],
+#     ['find', '910'],
+#     ['find', '911'],
+#     ['del', '910'],
+#     ['del', '911'],
+#     ['find', '911'],
+#     ['find', '76213'],
+#     ['add', '76213', 'daddy'],
+#     ['find', '76213']]
+# queries = [Query(i) for i in input]
+# print(process_queries_fast(queries))
+# Mom
+# not found
+# police
+# not found
+# Mom
+# daddy
+
+if __name__ == '__main__':
+    write_responses(process_queries_fast(read_queries()))
