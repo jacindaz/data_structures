@@ -15,6 +15,7 @@ class QueryProcessor:
     def __init__(self, bucket_count):
         self.bucket_count = bucket_count
         self.queries = self.read_queries()
+        # self.queries = list(map(lambda a: Query(a), queries))
         self.query_chain = self.bucket_count * [[]]
 
     def _hash_func(self, s):
@@ -40,7 +41,10 @@ class QueryProcessor:
                 # print(f'hashed_key: {hashed_key}, query.s: {query.s}')
 
             if query.type == 'add':
-                self.query_chain[hashed_key] = self.query_chain[hashed_key] + [query.s]
+                if query.s in self.query_chain[hashed_key]:
+                    next
+                else:
+                    self.query_chain[hashed_key] = self.query_chain[hashed_key] + [query.s]
                 # print(f'add! self.query_chain: {self.query_chain}')
 
             if query.type == 'del':
@@ -61,8 +65,10 @@ class QueryProcessor:
                 print(' '.join(reversed(self.query_chain[query.ind])))
 
 
-# blah = [['add','world'],['add','HellO'],['check','4'],['find','World'],['find','world'],['del','world'],['check','4'],['del','HellO'],['add','luck'],['add','GooD'],['check','2'],['del','good']]
-# query_proc = QueryProcessor(5, blah)
+# blah = [['add','world'],['add','HellO'],['check','4'],['add', 'HellO'],['find','World'],['find','world'],['del','world'],['check','4'],['del','HellO'],['add','luck'],['add','GooD'],['check','2'],['del','good']]
+# bananas = 5
+
+# query_proc = QueryProcessor(bananas, blah)
 # query_proc.process_queries()
 
 # HellO world
