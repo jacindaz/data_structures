@@ -24,25 +24,40 @@ class TreeOrders:
         if root_index == -1:
             return
 
-        if root:
+        if len(self.key) > 0:
             left_child_indices = self.left[root_index]
             left_child = self.key[left_child_indices]
 
             self.inOrder(left_child, left_child_indices)
-            self.results.append(root)
+            self.in_order_results.append(root)
 
             right_child_indices = self.right[root_index]
             right_child = self.key[right_child_indices]
             self.inOrder(right_child, right_child_indices)
 
-        return self.results
+        return self.in_order_results
 
-    def preOrder(self):
-        self.result = []
-        # Finish the implementation
-        # You may need to add a new recursive method to do that
+    def preOrder(self, root, root_index=0):
+        if root_index == -1:
+            return
 
-        return self.result
+        if len(self.key) > 0:
+            self.pre_order_results.append(root)
+            print(f'\ninside if statement, root: {root}, {self.pre_order_results}')
+
+            left_child_indices = self.left[root_index]
+            left_child = self.key[left_child_indices]
+            print(f'left_child: {left_child}, root: {root}, {self.pre_order_results}')
+
+            self.preOrder(left_child, left_child_indices)
+
+            right_child_indices = self.right[root_index]
+            right_child = self.key[right_child_indices]
+            print(f'right_child: {right_child}, root: {root}, {self.pre_order_results}')
+
+            self.preOrder(right_child, right_child_indices)
+
+        return self.pre_order_results
 
     def postOrder(self):
         self.result = []
@@ -53,7 +68,8 @@ class TreeOrders:
 
 def main():
     tree = TreeOrders()
-    print(tree.inOrder(tree.key[0]))
+    # print(tree.inOrder(tree.key[0]))
+    print(tree.preOrder(tree.key[0]))
     # print(f'tree.results: {tree.results}')
 
     # print(" ".join(str(x) for x in tree.inOrder()))
