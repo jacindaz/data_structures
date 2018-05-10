@@ -25,13 +25,15 @@ class TreeOrders:
             return
 
         if root:
-            left_child = self.key[self.left[root_index]]
+            left_child_indices = self.left[root_index]
+            left_child = self.key[left_child_indices]
 
-            self.inOrder(left_child, self.left[root_index])
+            self.inOrder(left_child, left_child_indices)
             self.results.append(root)
 
-            right_child = self.key[self.right[root_index]]
-            self.inOrder(right_child, self.right[root_index])
+            right_child_indices = self.right[root_index]
+            right_child = self.key[right_child_indices]
+            self.inOrder(right_child, right_child_indices)
 
         return self.results
 
