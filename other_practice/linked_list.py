@@ -14,14 +14,42 @@ node_26.next = node_1
 
 
 class LinkedList:
-    def __init__(self, head):
+    def __init__(self, head=None):
         self.head = head
+
+    def linked_list_values(self):
+        current_node = self.head
+        linked_list_values = [current_node.val]
+        while current_node.next != None:
+            current_node = current_node.next
+            linked_list_values.append(current_node.val)
+
+        return linked_list_values
 
     def insert_node(self, prior_node, new_node):
         print('insert node')
 
     def insert_at_tail(self, new_node):
         print('insert at tail')
+
+        # if linked list is empty
+        # make new node the head
+        if self.head is None:
+            self.head = new_node
+            tail = new_node
+        else:
+            # need to traverse to the end of linked list
+            # to find the tail
+            current_node = self.head
+            while current_node.next != None:
+                current_node = current_node.next
+            old_tail = current_node
+
+            # then make current tail's next point to new node
+            old_tail.next = new_node
+            tail = new_node
+
+        return tail.val
 
     def insert_at_head(self, new_node):
         new_node.next = self.head
@@ -31,7 +59,8 @@ ll = LinkedList(node_12)
 print(ll.head.val)
 
 new_node = Node(100)
-ll.insert_at_head(new_node)
+print(ll.insert_at_tail(new_node))
+print(ll.linked_list_values())
 
 
 # Traverse a linked list
