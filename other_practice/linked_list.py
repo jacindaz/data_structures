@@ -3,16 +3,6 @@ class Node:
         self.val = val
         self.next = None # the pointer initially points to nothing
 
-node_12 = Node(12)
-node_92 = Node(92)
-node_26 = Node(26)
-node_1 = Node(1)
-
-node_12.next = node_92
-node_92.next = node_26
-node_26.next = node_1
-
-
 class LinkedList:
     def __init__(self, head=None):
         self.head = head
@@ -29,37 +19,43 @@ class LinkedList:
     def insert_node(self, prior_node, new_node):
         print('insert node')
 
-    def insert_at_tail(self, new_node):
-        print('insert at tail')
 
-        # if linked list is empty
-        # make new node the head
+    def insert_at_tail(self, new_node_val):
+        new_node = Node(new_node_val)
+
         if self.head is None:
             self.head = new_node
             tail = new_node
         else:
-            # need to traverse to the end of linked list
-            # to find the tail
             current_node = self.head
             while current_node.next != None:
                 current_node = current_node.next
             old_tail = current_node
 
-            # then make current tail's next point to new node
             old_tail.next = new_node
             tail = new_node
 
         return tail.val
 
-    def insert_at_head(self, new_node):
+    def insert_at_head(self, new_node_val):
+        new_node = Node(new_node_val)
         new_node.next = self.head
         self.head = new_node
 
-ll = LinkedList(node_12)
-print(ll.head.val)
+node_12 = Node(12)
+node_92 = Node(92)
+node_26 = Node(26)
+node_1 = Node(1)
 
-new_node = Node(100)
-print(ll.insert_at_tail(new_node))
+node_12.next = node_92
+node_92.next = node_26
+node_26.next = node_1
+
+ll = LinkedList(node_12)
+# print(ll.insert_at_tail(100))
+# print(ll.insert_at_head(100))
+
+# print(ll.insert_node())
 print(ll.linked_list_values())
 
 
