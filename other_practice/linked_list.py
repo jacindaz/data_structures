@@ -48,6 +48,16 @@ class LinkedList:
         new_node.next = self.head
         self.head = new_node
 
+    def reverse_list(self):
+        new_linked_list = LinkedList()
+
+        current_node = self.head
+        while current_node != None:
+            new_linked_list.insert_at_head(current_node.val)
+            current_node = current_node.next
+
+        return new_linked_list
+
 node_12 = Node(12)
 node_92 = Node(92)
 node_26 = Node(26)
@@ -60,9 +70,11 @@ node_26.next = node_1
 ll = LinkedList(node_12)
 # print(ll.insert_at_tail(100))
 # print(ll.insert_at_head(100))
+# print(ll.insert_node(92, 100))
+# print(ll.linked_list_values())
 
-print(ll.insert_node(92, 100))
-print(ll.linked_list_values())
+new_ll = ll.reverse_list()
+print(new_ll.linked_list_values())
 
 
 # Traverse a linked list
