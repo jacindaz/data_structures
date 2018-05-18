@@ -16,9 +16,15 @@ class LinkedList:
 
         return linked_list_values
 
-    def insert_node(self, prior_node, new_node):
-        print('insert node')
+    def insert_node(self, prior_node_val, new_node_val):
+        new_node = Node(new_node_val)
 
+        current_node = self.head
+        while current_node != None:
+            if current_node.val == prior_node_val:
+                new_node.next = current_node.next
+                current_node.next = new_node
+            current_node = current_node.next
 
     def insert_at_tail(self, new_node_val):
         new_node = Node(new_node_val)
@@ -55,7 +61,7 @@ ll = LinkedList(node_12)
 # print(ll.insert_at_tail(100))
 # print(ll.insert_at_head(100))
 
-# print(ll.insert_node())
+print(ll.insert_node(92, 100))
 print(ll.linked_list_values())
 
 
